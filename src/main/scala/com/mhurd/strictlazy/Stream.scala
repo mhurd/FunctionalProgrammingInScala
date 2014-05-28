@@ -9,13 +9,13 @@ sealed trait Stream[+A] {
     case Cons(h, t) => Some(h())
   }
 
-  // Exercise 1
+  // 5.2 An extended example: lazy lists, EXERCISE 1
   def toList: List[A] = this match {
     case Empty => List()
     case Cons(h, t) => h() :: t().toList
   }
 
-  // Exercise 2a
+  // 5.2 An extended example: lazy lists, EXERCISE 2
   def take(n: Int): Stream[A] = {
     @tailrec
     def inner(count: Int, s: Stream[A], result: List[A]): Stream[A] = {
@@ -29,7 +29,7 @@ sealed trait Stream[+A] {
     inner(0, this, Nil)
   }
 
-  // Exercise 2b
+  // 5.2 An extended example: lazy lists, EXERCISE 2
   def drop(n: Int): Stream[A] = {
     @tailrec
     def inner(count: Int, result: Stream[A]): Stream[A] = {
@@ -43,7 +43,7 @@ sealed trait Stream[+A] {
     inner(n, this)
   }
 
-  // Exercise 3
+  // 5.2 An extended example: lazy lists, EXERCISE 3
   def takeWhile(p: A => Boolean): Stream[A] = {
     @tailrec
     def inner(count: Int, s: Stream[A], result: List[A]): Stream[A] = {
