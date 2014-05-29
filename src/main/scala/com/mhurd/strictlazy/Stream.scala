@@ -9,6 +9,12 @@ sealed trait Stream[+A] {
     case Cons(h, t) => Some(h())
   }
 
+  def foldRight[B](z: => B)(f: (A, => B) => B): B = this match {
+    case Cons(h, t) =>
+      f(h(), t().foldRight(z)(f))
+    case _ => z
+  }
+
   // 5.2 An extended example: lazy lists, EXERCISE 1
   def toList: List[A] = this match {
     case Empty => List()
@@ -54,6 +60,16 @@ sealed trait Stream[+A] {
       }
     }
     inner(0, this, Nil)
+  }
+
+  // 5.3 Separating program description from evaluation, EXERCISE 4
+  def forAll(p: A => Boolean): Boolean = {
+    this.foldRight(true)((a, b) => p(a) && b) // order is important, eval the predicate first so it exits early (&&)
+  }
+
+  // 5.3 Separating program description from evaluation, EXERCISE 5
+  def takeWhileFR(p: A => Boolean): Stream[A] = {
+    this.foldRight[Stream[A]](Empty)((a, b) => if (p(a)) Stream.cons(a, b) else Empty)
   }
 
 }
