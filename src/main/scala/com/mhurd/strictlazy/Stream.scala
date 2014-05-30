@@ -9,12 +9,6 @@ sealed trait Stream[+A] {
     case Cons(h, t) => Some(h())
   }
 
-  def foldRight[B](z: => B)(f: (A, => B) => B): B = this match {
-    case Cons(h, t) =>
-      f(h(), t().foldRight(z)(f))
-    case _ => z
-  }
-
   // 5.2 An extended example: lazy lists, EXERCISE 1
   def toList: List[A] = this match {
     case Empty => List()
@@ -60,6 +54,11 @@ sealed trait Stream[+A] {
       }
     }
     inner(0, this, Nil)
+  }
+
+  def foldRight[B](z: => B)(f: (A, => B) => B): B = this match {
+    case Cons(h, t) => f(h(), t().foldRight(z)(f))
+    case _ => z
   }
 
   // 5.3 Separating program description from evaluation, EXERCISE 4

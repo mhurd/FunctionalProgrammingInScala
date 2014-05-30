@@ -44,8 +44,8 @@ class StreamSpec extends FlatSpec with Matchers with Timer {
   }
 
   it should "have a forAll(p: A => Boolean) implementation" in {
-    //Stream(2,4,6,8,10).forAll(_ % 2 == 0) should be (true)
-    //Stream(2,4,6,8,10).forAll(_ % 2 != 0) should be (false)
+    Stream(2,4,6,8,10).forAll(_ % 2 == 0) should be (true)
+    Stream(2,4,6,8,10).forAll(_ % 2 != 0) should be (false)
     Stream(2,3,6,8,10).forAll(_ % 2 == 0) should be (false)
   }
 
