@@ -6,24 +6,35 @@ package object monoids {
 
   // EXERCISE 1: Give Monoid instances for integer addition and
   // multiplication as well as the Boolean operators.
-  implicit val intAdditionMonoid = new Monoid[Int]() {
+  implicit def intAdditionMonoid = new Monoid[Int]() {
     override def zero: Int = 0
     override def append(f1: Int, f2: => Int): Int = f1 + f2
   }
 
-  implicit val intMultiplicationMonoid = new Monoid[Int]() {
+  implicit def intMultiplicationMonoid = new Monoid[Int]() {
     override def zero: Int = 1
     override def append(f1: Int, f2: => Int): Int = f1 * f2
   }
 
-  implicit val booleanOrMonoid = new Monoid[Boolean]() {
+  implicit def booleanOrMonoid = new Monoid[Boolean]() {
     override def zero: Boolean = false
     override def append(f1: Boolean, f2: => Boolean): Boolean = f1 || f2
   }
 
-  implicit val booleanAndMonoid = new Monoid[Boolean]() {
+  implicit def booleanAndMonoid = new Monoid[Boolean]() {
     override def zero: Boolean = true
     override def append(f1: Boolean, f2: => Boolean): Boolean = f1 && f2
+  }
+
+  // EXERCISE 2: Give a Monoid instance for combining Option values
+  implicit def optionMonoid[A](m: Monoid[A]) = new Monoid[Option[A]]() {
+    override def zero: Option[A] = None
+    override def append(f1: Option[A], f2: => Option[A]): Option[A] = (f1, f2) match {
+      case (None, None) => None
+      case (Some(v1), Some(v2)) => Some(List(v1, v2).foldLeft(m.zero)((l, r) => m.append(l, r)))
+      case (Some(v1), None) => f1
+      case (None, Some(v1)) => f2
+    }
   }
 
 }

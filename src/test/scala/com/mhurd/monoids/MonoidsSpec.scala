@@ -29,4 +29,10 @@ class MonoidsSpec extends FlatSpec with Matchers with Timer {
     test(List(true,false,true,false,true))(booleanAndMonoid) should be (false)
   }
 
+  "The Option monoid" should "should be available for use implicitly" in {
+    test(List(Option(1),Option(2),Option(3),Option(4),Option(5)))(optionMonoid[Int](intAdditionMonoid)) should be (Option(15))
+    test(List[Option[Int]](None,None,None,None,None))(optionMonoid[Int](intAdditionMonoid)) should be (None)
+    test(List(Option(1),None,Option(3),Option(4),None))(optionMonoid[Int](intAdditionMonoid)) should be (Option(8))
+  }
+
  }
