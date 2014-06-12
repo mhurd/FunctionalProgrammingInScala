@@ -3,8 +3,6 @@ package com.mhurd.monoids
 import com.mhurd.util.Timer
 import org.scalatest._
 
-import scalaz.Monoid
-
 class MonoidsSpec extends FlatSpec with Matchers with Timer {
 
   "The Int Addition monoid" should "should be available for use implicitly" in {
