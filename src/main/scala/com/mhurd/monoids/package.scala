@@ -37,4 +37,22 @@ package object monoids {
     }
   }
 
+  // EXERCISE 3: A function having the same argument and return type is sometimes
+  // called an endofunction . 2 Write a monoid for endofunctions
+  implicit def endoMonoid[A]: Monoid[A => A] = new Monoid[(A) => A] {
+    override def zero: (A) => A = (a: A) => a
+    override def append(f1: (A) => A, f2: => (A) => A): (A) => A = {
+      f2.compose(f1)
+    }
+  }
+
+  // EXERCISE 5: Write a monoid instance for String that inserts spaces between words
+  // unless there already is one, and trims spaces off the ends of the result.
+  implicit def trimMonoid: Monoid[String] = new Monoid[String] {
+    override def zero: String = ""
+    override def append(f1: String, f2: => String): String = {
+      f1.trim + " " + f2.trim
+    }
+  }
+
 }
